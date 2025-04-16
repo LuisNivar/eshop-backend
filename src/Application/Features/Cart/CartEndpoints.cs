@@ -13,10 +13,9 @@ public static class CartEndpoints
         var api = app.MapGroup("/cart");
 
         api.MapGet("/{userId}", GetCartByUserId);
-        // api.MapPost("/", CreateCart);
-        api.MapPost("/items", AddItemsCart);
-        api.MapPut("/items", UpdateQuantityItemsCart);
-        api.MapDelete("/items", RemoveItemAsync);
+        api.MapPost("/item", AddItemsCart);
+        api.MapPut("/item", UpdateQuantityItemsCart);
+        api.MapDelete("/item", RemoveItemAsync);
         api.MapDelete("/{userId}", RemoveCartByCustomerId);
     }
 
@@ -27,13 +26,6 @@ public static class CartEndpoints
         var MappedCart = Cart.Map(cart!);
         return TypedResults.Ok(new CartResponse(MappedCart));
     }
-
-    // private static async Task<Ok<CartResponse>> CreateCart(Cart cart, CartService cartService)
-    // {
-    //     var newCart = await cartService.CreateAsync(Cart.ToCart(cart));
-    //     var MappedCart = Cart.Map(newCart!);
-    //     return TypedResults.Ok(new CartResponse(MappedCart));
-    // }
 
     private static async Task<Ok<CartResponse>> AddItemsCart(string userId, int productId, int quantity, CartService cartService)
     {
