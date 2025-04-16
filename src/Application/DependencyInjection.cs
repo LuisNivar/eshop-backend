@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using Application.Services;
 using System.Text.Json.Serialization;
+using Stripe;
 
 namespace Application;
 
@@ -41,6 +42,8 @@ public static class DependencyInjection
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
+        // Stripe
+        StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_API_KEY");
     }
 
 }
