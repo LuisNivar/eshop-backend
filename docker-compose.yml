@@ -17,6 +17,16 @@ services:
     volumes:
       - redis_data:/data
     restart: unless-stopped
+  stripe-cli:
+    image: stripe/stripe-cli
+    container_name: stripe-cli
+    environment:
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_DEVICE_NAME=docker-dev
+    entrypoint: >
+      stripe listen --forward-to http://localhost:5256/webhook
+    tty: true
+    stdin_open: true
 
 volumes:
   postgres-data:
