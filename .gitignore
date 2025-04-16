@@ -1,0 +1,67 @@
+# --- Carpetas de compilación ---
+bin/
+obj/
+
+# --- Archivos de usuario y configuración de entorno ---
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+*.swp
+
+# --- Archivos temporales y logs ---
+*.log
+*.tmp
+
+# --- Secretos (si no usás Secret Manager correctamente) ---
+appsettings.Development.json
+appsettings.Local.json
+*.secrets.json
+
+# --- EF Core ---
+Migrations/
+
+# 👆 Si estás generando las migraciones automáticamente y no querés versionarlas.
+# ❗ Si vas a compartir el proyecto, te conviene **sí** versionar las migraciones,
+# en ese caso NO ignores la carpeta Migrations/
+
+# --- Bases de datos locales ---
+*.db
+*.sqlite
+*.mdf
+*.ldf
+
+# Backup folder for Package Reference Convert tool in Visual Studio 2017
+MigrationBackup/
+
+# Ionide (cross platform F# VS Code tools) working folder
+.ionide/
+
+# --- Sistema ---
+.DS_Store
+Thumbs.db
+
+# Local History for Visual Studio Code
+.history/
+
+# Windows Installer files from build outputs
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Fody - auto-generated XML schema
+FodyWeavers.xsd
+
+# VS Code files for those working on multiple tools
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Click-Once directory
+publish/
