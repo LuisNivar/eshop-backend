@@ -2,6 +2,7 @@ using Application;
 using Application.Features.Cart;
 using Application.Features.Catalog;
 using Application.Features.Orders;
+using Application.Features.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+DotNetEnv.Env.Load();
+
 builder.AddApplication();
 
 var app = builder.Build();
@@ -40,6 +43,7 @@ app.UseHttpsRedirection();
 app.AddCatalogEndpoints();
 app.AddCartEndpoints();
 app.AddOrderEndpoints();
+app.AddPaymentEndpoint();
 
 app.Run();
 

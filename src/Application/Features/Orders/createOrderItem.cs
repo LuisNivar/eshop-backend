@@ -1,6 +1,5 @@
 namespace Application.Features.Orders;
 
-using Application.Domain.Enums;
 using OrderItemEntity = Domain.Entities.Orders.OrderItem;
 
 public class CreateOrderItem

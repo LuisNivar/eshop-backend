@@ -14,8 +14,7 @@ public static partial class OrderEndpoints
         var api = app.MapGroup("/order");
 
         api.MapGet("/", GetOrders);
-        api.MapPost("/", CreateOrder);
-        api.MapPost("/cart/", CreateFromCart);
+        api.MapPost("/cart", CreateFromCart);
         api.MapGet("/{id:int}", GetOrderById);
         api.MapGet("/{userId}", GetOrdersByUserId);
         api.MapPut("/cancel/{id:int}", CancelOrder);
@@ -47,14 +46,6 @@ public static partial class OrderEndpoints
         return TypedResults.Ok(new OrdersResponse(mappedOrders));
     }
 
-    private static async Task<Ok<OrderResponse>> CreateOrder(CreateOrder createOrder, ApplicationDbContext dbContext)
-    {
-        var newOrder = createOrder.ToOrder();
-        dbContext.Orders.Add(newOrder);
-        await dbContext.SaveChangesAsync();
-        var mappedOrder = Order.Map(newOrder);
-        return TypedResults.Ok(new OrderResponse(mappedOrder));
-    }
     private static async Task<Ok<OrderResponse>> CreateFromCart(OrderFromCart OrderFromCart, OrderService orderService)
     {
         var order = await orderService.CreateOrderFromCartAsync(OrderFromCart);
