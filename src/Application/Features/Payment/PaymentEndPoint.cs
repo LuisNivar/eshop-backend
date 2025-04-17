@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Stripe;
 using Stripe.Checkout;
 
@@ -11,19 +12,19 @@ namespace Application.Features.Payment;
 
 public static class PaymentEndpoint
 {
-    //TODO: Move to service
+    //TODO: Move to service + interface
     public static void AddPaymentEndpoint(this IEndpointRouteBuilder api)
     {
         api.MapPost("/pay/{orderId:int}", PayOrder);
         api.MapPost("/webhook", UpdateStatus);
     }
 
-    private static async Task<IResult> PayOrder(int orderId, ApplicationDbContext dbContext)
+    private static async Task<IResult> PayOrder(int orderId, ApplicationDbContext dbContext, HttpContext httpContext)
     {
-        var _domain = Environment.GetEnvironmentVariable("DOMAIN_URL");
+        var _domain = "http/frontend-fake";
         var order = await dbContext.Orders
-        .Include(o => o.Items)
-        .FirstOrDefaultAsync(o => o.Id == orderId);
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
 
         if (order is null || order.IsPaid)
             return Results.BadRequest("Order invalid!");
@@ -57,12 +58,12 @@ public static class PaymentEndpoint
         return Results.Ok(new { sessionId = session.Id, url = session.Url });
     }
 
-    public static async Task<IResult> UpdateStatus(HttpRequest request, ApplicationDbContext db)
+    public static async Task<IResult> UpdateStatus(HttpRequest request, ApplicationDbContext db, IOptions<StripeOptions> options)
     {
         var json = await new StreamReader(request.Body).ReadToEndAsync();
         var stripeSignature = request.Headers["Stripe-Signature"];
 
-        var endpointSecret = Environment.GetEnvironmentVariable("STRIPE_WEBHOOK_SECRET");
+        var endpointSecret = options.Value.WebhookSecret;
 
         Event stripeEvent;
 

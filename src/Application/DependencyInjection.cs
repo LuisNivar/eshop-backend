@@ -1,4 +1,4 @@
-using Application.Infraestructure;
+using Application.Infrastructure;
 using Application.Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +8,7 @@ using StackExchange.Redis;
 using Application.Services;
 using System.Text.Json.Serialization;
 using Stripe;
+using Application.Features.Payment;
 
 namespace Application;
 
@@ -42,8 +43,8 @@ public static class DependencyInjection
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
-        // Stripe
-        StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_API_KEY");
+        builder.Services.Configure<StripeOptions>(builder.Configuration.GetRequiredSection("Stripe"));
+        StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
     }
 
 }
