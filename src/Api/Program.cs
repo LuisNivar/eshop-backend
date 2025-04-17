@@ -11,19 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//TODO Move to DependencyInjection
-// Habilitar CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowLocalHost", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
-DotNetEnv.Env.Load();
 
 builder.AddApplication();
 
@@ -35,8 +22,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-//app.UseCors("AllowLocalHost");
 
 app.UseHttpsRedirection();
 
