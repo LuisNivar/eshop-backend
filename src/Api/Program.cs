@@ -6,24 +6,10 @@ using Application.Features.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//TODO Move to DependencyInjection
-// Habilitar CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowLocalHost", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
-DotNetEnv.Env.Load();
+DotNetEnv.Env.Load("./.env.local");
 
 builder.AddApplication();
 
@@ -36,10 +22,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseCors("AllowLocalHost");
-
 app.UseHttpsRedirection();
 
+//TODO: Fluent validations
 app.AddCatalogEndpoints();
 app.AddCartEndpoints();
 app.AddOrderEndpoints();

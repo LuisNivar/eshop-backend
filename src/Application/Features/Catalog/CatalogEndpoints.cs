@@ -18,13 +18,14 @@ public static class CatalogEndpoints
         api.MapDelete("/{id:int}", DeleteProduct);
     }
 
-    private static async Task<IResult> DeleteProduct(ApplicationDbContext dbContex, int id)
+    private static async Task<IResult> DeleteProduct(ApplicationDbContext dbContext, int id)
     {
-        var productToRemove = await dbContex.Products.FindAsync(id);
+        var productToRemove = await dbContext.Products.FindAsync(id);
+
         if (productToRemove is null) return Results.NotFound();
 
-        dbContex.Products.Remove(productToRemove);
-        dbContex.SaveChanges();
+        dbContext.Products.Remove(productToRemove);
+        await dbContext.SaveChangesAsync();
         return Results.NoContent();
     }
 

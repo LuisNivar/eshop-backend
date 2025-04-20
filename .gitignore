@@ -15,19 +15,10 @@ obj/
 *.tmp
 
 # Eviroment Variables
-.env
+*.env.local
+*.env
 
-# --- Secretos (si no usás Secret Manager correctamente) ---
-appsettings.Development.json
-appsettings.Local.json
 *.secrets.json
-
-# --- EF Core ---
-Migrations/
-
-# 👆 Si estás generando las migraciones automáticamente y no querés versionarlas.
-# ❗ Si vas a compartir el proyecto, te conviene **sí** versionar las migraciones,
-# en ese caso NO ignores la carpeta Migrations/
 
 # --- Bases de datos locales ---
 *.db

@@ -3,7 +3,7 @@ using Application.Domain.Entities.Cart;
 using Application.Domain.Interfaces;
 using StackExchange.Redis;
 
-namespace Application.Infraestructure;
+namespace Application.Infrastructure;
 
 public class RedisCartRepository : ICartRepository
 {

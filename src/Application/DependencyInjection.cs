@@ -1,4 +1,4 @@
-using Application.Infraestructure;
+using Application.Infrastructure;
 using Application.Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +8,8 @@ using StackExchange.Redis;
 using Application.Services;
 using System.Text.Json.Serialization;
 using Stripe;
+using Application.Features.Payment;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Application;
 
@@ -15,6 +17,12 @@ public static class DependencyInjection
 {
     public static void AddApplication(this WebApplicationBuilder builder)
     {
+        // Kestrel
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.Configure(builder.Configuration.GetSection("Kestrel"));
+        });
+
         // Database
         var DataBaseConnectionString = builder.Configuration.GetConnectionString("Database");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -35,15 +43,28 @@ public static class DependencyInjection
         //  Orders 
         builder.Services.AddScoped<OrderService>();
 
-
         // Enum to String 
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
         {
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
-        // Stripe
-        StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_API_KEY");
+        var stripeOptions = new StripeOptions
+        {
+            ApiKey = Environment.GetEnvironmentVariable("Stripe__ApiKey")!,
+            WebhookSecret = Environment.GetEnvironmentVariable("Stripe__WebhookSecret")!
+        };
+
+        builder.Services.Configure<StripeOptions>(options =>
+        {
+            options.ApiKey = stripeOptions.ApiKey;
+            options.WebhookSecret = stripeOptions.WebhookSecret;
+        });
+
+        StripeConfiguration.ApiKey = stripeOptions.ApiKey;
+
+        // Payment
+        builder.Services.AddScoped<IPayment, PaymentService>();
     }
 
 }
