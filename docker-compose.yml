@@ -17,19 +17,23 @@ services:
     volumes:
       - redis_data:/data
     restart: unless-stopped
+
   stripe-cli:
     image: stripe/stripe-cli
     container_name: stripe-cli
+    env_file:
+      - ./.env
     environment:
-      - STRIPE_API_KEY=${Stripe__ApiKey}
-      - STRIPE_DEVICE_NAME=docker-dev
+      - STRIPE_API_KEY
+      - STRIPE_DEVICE_NAME
     entrypoint: >
-      stripe listen --forward-to host.docker.internal:5256/webhook
+      stripe listen 
+      --forward-to http://host.docker.internal:5256/webhook	 
+      --api-key $STRIPE_API_KEY
+    extra_hosts:
+      - "host.docker.internal:192.168.100.80"
     tty: true
     stdin_open: true
-    env_file:
-      - ./src/Api/.env.local
-
 volumes:
   postgres-data:
   redis_data:
