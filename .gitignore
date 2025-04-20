@@ -16,6 +16,7 @@ obj/
 
 # Eviroment Variables
 *.env.local
+*.env
 
 # --- Secretos (si no usás Secret Manager correctamente) ---
 appsettings.Development.json
