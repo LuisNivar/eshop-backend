@@ -18,9 +18,6 @@ obj/
 *.env.local
 *.env
 
-# --- Secretos (si no usás Secret Manager correctamente) ---
-appsettings.Development.json
-appsettings.Local.json
 *.secrets.json
 
 # --- Bases de datos locales ---
