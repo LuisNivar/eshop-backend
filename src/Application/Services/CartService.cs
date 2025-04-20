@@ -4,32 +4,13 @@ using Application.Domain.Interfaces;
 using CartEntity = Domain.Entities.Cart.Cart;
 using CartItemEntity = Domain.Entities.Cart.CartItem;
 
-public class CartService
+public class CartService(ICartRepository repository, ApplicationDbContext db)
 {
-    private readonly ICartRepository _repository;
-    private readonly ApplicationDbContext _db;
-
-    public CartService(ICartRepository repository, ApplicationDbContext db)
-    {
-        _repository = repository;
-        _db = db;
-    }
+    private readonly ICartRepository _repository = repository;
+    private readonly ApplicationDbContext _db = db;
 
     public Task<CartEntity?> GetAsync(string userId) => _repository.GetCartAsync(userId);
 
-    public async Task<CartEntity> CreateAsync(CartEntity cart)
-    {
-        var items = cart.Items;
-
-        foreach (var item in items)
-        {
-            var product = await _db.Products.FindAsync(item.ProductId)
-             ?? throw new Exception("Product not found!");
-        }
-        return await _repository.SetCartAsync(cart);
-    }
-
-    //public Task<CartEntity> UpdateAsync(CartEntity cart) => _repository.SetCartAsync(cart);
     public Task<bool> DeleteAsync(string userId) => _repository.DeleteCartAsync(userId);
 
     public async Task<CartEntity> UpdateQuantityItemAsync(string userId, int productId, int quantity)
