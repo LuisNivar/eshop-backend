@@ -6,11 +6,10 @@ using Application.Features.Payment;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+DotNetEnv.Env.Load("./.env.local");
 
 builder.AddApplication();
 
@@ -25,6 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//TODO: Fluent validations
 app.AddCatalogEndpoints();
 app.AddCartEndpoints();
 app.AddOrderEndpoints();
