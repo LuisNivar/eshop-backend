@@ -26,7 +26,8 @@ public class Order
             ShippingDestination = order.ShippingDestination,
             UserId = order.UserId,
             Items = newItems,
-            Status = order.Status
+            Status = order.Status,
+            IsPaid = order.IsPaid
         };
     }
 }

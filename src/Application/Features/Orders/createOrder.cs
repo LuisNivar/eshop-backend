@@ -24,7 +24,8 @@ public class CreateOrder
             OrderDate = OrderDate,
             UserId = UserId,
             Items = newItems,
-            Status = Status
+            Status = Status,
+            IsPaid = IsPaid
         };
     }
 }
