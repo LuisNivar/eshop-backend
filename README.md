@@ -1,4 +1,4 @@
-# 🏍️ eShop Backend
+# 🛍️ eShop Backend
 
 Este es el backend de una eShop construido con **.NET 8**, usando **Minimal APIs**, **Entity Framework Core**, **PostgreSQL**, **Redis** para manejar el carrito, y **Stripe** para pagos. El entorno de desarrollo está orquestado con **Docker**.
 
